@@ -1,21 +1,21 @@
 local M = {}
 
 local function get_palette()
-  local palette = require('catppuccin.palettes').get_palette 'mocha'
+  local palette = require('moonfly').palette
 
   return {
-    bg = palette.base,
-    fg = palette.text,
+    bg = palette.bg,
+    fg = palette.white,
     yellow = palette.yellow,
-    cyan = palette.teal,
-    darkblue = palette.crust,
+    cyan = palette.turquoise,
+    darkblue = palette.bay,
     green = palette.green,
-    orange = palette.peach,
+    orange = palette.orange,
     violet = palette.lavender,
-    magenta = palette.mauve,
+    magenta = palette.purple,
     blue = palette.blue,
     red = palette.red,
-    pink = palette.pink,
+    pink = palette.orchid,
   }
 end
 

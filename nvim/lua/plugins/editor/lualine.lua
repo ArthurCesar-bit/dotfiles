@@ -1,7 +1,7 @@
 return {
   {
     'nvim-lualine/lualine.nvim',
-    dependencies = { 'nvim-tree/nvim-web-devicons', 'catppuccin/nvim' },
+    dependencies = { 'nvim-tree/nvim-web-devicons', 'bluz71/vim-moonfly-colors' },
     config = function()
       -- Eviline config for lualine
       -- Author: shadmansaleh

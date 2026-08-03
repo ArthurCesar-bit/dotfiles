@@ -99,7 +99,7 @@ nvim/
 │       ├── editor/       # fzf-lua, gitsigns, nvim-tree, lualine, lazygit, ufo, which-key, tmux nav
 │       ├── formatting/   # conform.nvim
 │       ├── test/         # neotest (+ go, python, vitest, plenary adapters)
-│       ├── ui/           # catppuccin, dressing, treesitter-context
+│       ├── ui/           # moonfly, dressing, treesitter-context
 │       └── util/         # mini.hipatterns
 └── lsp/                  # per-server settings (vim.lsp.config style)
 ```
