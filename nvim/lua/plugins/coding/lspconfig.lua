@@ -40,6 +40,11 @@ return {
         'dockerls',
         'docker_compose_language_service',
         'neocmake',
+        'bashls',
+        'jsonls',
+        'yamlls',
+        'clangd',
+        'jdtls',
       }
 
       -- Broadcast completion capabilities (blink.cmp) + ufo folding to every
@@ -154,6 +159,12 @@ return {
           'dockerfile-language-server',
           'docker-compose-language-service',
           'neocmakelsp',
+          'bash-language-server',
+          'json-lsp',
+          'yaml-language-server',
+          'clangd',
+          -- jdtls needs a JDK 21+ on PATH (you have OpenJDK 21).
+          'jdtls',
           -- formatters
           'stylua',
           'prettier',
