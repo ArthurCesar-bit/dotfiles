@@ -1,41 +1,48 @@
+--[[
+  WezTerm — tema "Nocturne" (dark)
+  ~/.config/wezterm -> ~/dotfiles/wezterm
+
+  LEADER = CTRL+Space
+
+  Panes      LEADER |  / LEADER -   split horizontal / vertical
+             LEADER h j k l         navegar
+             LEADER z               zoom     LEADER x  fechar
+             LEADER s               selecionar pane   LEADER o  rotacionar
+             LEADER r               modo resize (hjkl, Esc sai)
+  Abas       LEADER c  nova         LEADER n / p  próxima / anterior
+             ALT+1..9  ir para aba  LEADER ,  renomear
+  Workspaces LEADER w  listar       LEADER W  criar
+  Extras     LEADER f  buscar       LEADER [  copy mode
+             LEADER b  transparência  LEADER m  modo zen
+             CTRL+SHIFT+P  paleta   CTRL+SHIFT+Space  quick select
+--]]
+
 local wezterm = require("wezterm")
-local constants = require("constants")
-local commands = require("commands")
 local config = wezterm.config_builder()
 
--- Font settings
-config.font_size = 14
-config.line_height = 1.1
-config.font = wezterm.font_with_fallback({
-  "JetBrains Mono",
-  { family = "Symbols Nerd Font Mono", scale = 0.9 },
+config:set_strict_mode(true)
+
+require("lua.appearance").apply(config)
+require("lua.keys").apply(config)
+require("lua.tabs")
+require("lua.commands")
+
+--------------------------------------------------------------------- shell
+config.default_prog = { os.getenv("SHELL") or "/bin/bash", "-l" }
+
+------------------------------------------------------------------ hyperlinks
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+-- owner/repo -> github
+table.insert(config.hyperlink_rules, {
+	regex = [[["']?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["']?]],
+	format = "https://www.github.com/$1/$3",
 })
-config.freetype_load_flags = "NO_HINTING"
 
--- Colors
-config.colors = {
-	cursor_bg = "white",
-	cursor_border = "white",
+---------------------------------------------------------------- quick select
+config.quick_select_patterns = {
+	"[0-9a-f]{7,40}", -- hashes de commit
+	"[\\w\\-\\.\\/]+\\.(lua|ts|tsx|js|jsx|py|rs|go|json|md|yaml|yml)", -- caminhos de arquivo
+	"https?://\\S+",
 }
-
--- Appearance
-config.window_decorations = "RESIZE"
-config.hide_tab_bar_if_only_one_tab = true
-config.window_padding = {
-	left = 0,
-	right = 0,
-	top = 0,
-	bottom = 0,
-}
-config.window_background_image = constants.bg_image
-
--- Miscellaneous settings
-config.max_fps = 120
-config.prefer_egl = true
-
--- Custom commands
-wezterm.on("augment-command-palette", function()
-	return commands
-end)
 
 return config
