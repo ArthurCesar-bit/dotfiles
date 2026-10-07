@@ -192,6 +192,10 @@ gsettings set org.gnome.desktop.default-applications.terminal exec ghostty
 
 - Tokyo Night theme, transparent background, truecolor
 - Vim keys enabled, 2s refresh, `cpu mem net proc` boxes
+- `color_theme` is set to the bare name `tokyo-night`, which btop resolves from
+  `~/.config/btop/themes` — the theme file is vendored in `btop/themes/`, so it works
+  on any machine without depending on a distro or Homebrew path
+- btop writes `btop.log` into its config dir; it is gitignored
 
 ## presenterm
 
@@ -208,9 +212,6 @@ gsettings set org.gnome.desktop.default-applications.terminal exec ghostty
 
 - `nvim/lazy-lock.json` is **gitignored**, so plugin versions are not pinned across
   machines — a fresh clone installs the latest versions.
-- `btop/btop.conf` points `color_theme` at a macOS Homebrew path
-  (`/opt/homebrew/Cellar/btop/...`). On Linux, adjust it to your local theme path
-  (e.g. `/usr/share/btop/themes/tokyo-night.theme`) or btop will fall back to default.
 - `tmux/tmux.conf` calls `~/.config/tmux/hooks/update-pane-status.sh`, which is not
   in this repo. Those bindings still work; the hook just fails silently.
 - Ghostty has no workspaces, copy-mode or scrollback search, so the WezTerm bindings for
