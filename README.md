@@ -156,6 +156,11 @@ rest.
 - `prefix + r` — reload the config
 - `M-h/j/k/l` — resize panes (passes through to Neovim when a Vim pane is focused)
 - Undercurl and OSC 8 hyperlink passthrough enabled
+- `hooks/update-pane-status.sh` shows the pane border status line (index + running
+  command) only while a window is split, and hides it again once one pane is left.
+  Run from the split and kill-pane bindings and from the `pane-exited` hook.
+- `tmux/plugins/` is gitignored — tpm clones plugin sources into the config dir,
+  which is this repo once symlinked.
 
 ## Ghostty
 
@@ -212,8 +217,6 @@ gsettings set org.gnome.desktop.default-applications.terminal exec ghostty
 
 - `nvim/lazy-lock.json` is **gitignored**, so plugin versions are not pinned across
   machines — a fresh clone installs the latest versions.
-- `tmux/tmux.conf` calls `~/.config/tmux/hooks/update-pane-status.sh`, which is not
-  in this repo. Those bindings still work; the hook just fails silently.
 - Ghostty has no workspaces, copy-mode or scrollback search, so the WezTerm bindings for
   those were dropped in the migration; tmux covers the same ground.
 
