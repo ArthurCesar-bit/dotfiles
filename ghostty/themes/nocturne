@@ -1,0 +1,35 @@
+# Nocturne — paleta escura, contraste calibrado, sem neon berrante.
+# Portada do WezTerm (wezterm/lua/theme.lua).
+
+background = #04070e
+foreground = #c6cedb
+
+cursor-color = #ffffff
+cursor-text  = #04070e
+
+selection-background = #0c121c
+selection-foreground = #c6cedb
+
+# normal
+palette = 0=#050912
+palette = 1=#ef6b73
+palette = 2=#7fd88f
+palette = 3=#ffcc66
+palette = 4=#6cb6ff
+palette = 5=#c8a3ff
+palette = 6=#5ccfe6
+palette = 7=#b9c1cc
+
+# bright
+palette = 8=#252e3a
+palette = 9=#ff8087
+palette = 10=#95e6a6
+palette = 11=#ffd580
+palette = 12=#8cc7ff
+palette = 13=#d6b7ff
+palette = 14=#7ce0f3
+palette = 15=#e6edf3
+
+# extras (orange / pink)
+palette = 16=#ff9f5a
+palette = 17=#f38ba8

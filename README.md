@@ -2,7 +2,7 @@
 
 My personal terminal configuration, kept on GitHub so it is easy to hand off to any
 machine I sit down at. Clone the repo, symlink a few directories, and I get the same
-Neovim, tmux, WezTerm and btop setup I use every day — no manual re-tweaking.
+Neovim, tmux, Ghostty, btop and presenterm setup I use every day — no manual re-tweaking.
 
 Everything here is Linux/macOS oriented and lives under `~/.config`.
 
@@ -14,8 +14,9 @@ Everything here is Linux/macOS oriented and lives under `~/.config`.
 | ---------- | --------------------- | --------------------------- |
 | `nvim/`    | Neovim (Lua, lazy.nvim) | `~/.config/nvim`          |
 | `tmux/`    | tmux                  | `~/.config/tmux`            |
-| `wezterm/` | WezTerm               | `~/.config/wezterm`         |
+| `ghostty/` | Ghostty               | `~/.config/ghostty`         |
 | `btop/`    | btop                  | `~/.config/btop`            |
+| `presenterm/` | presenterm         | `~/.config/presenterm`      |
 
 Shared theme across the stack: **Catppuccin** (Mocha in Neovim, Catppuccin in tmux),
 with **Tokyo Night** in btop. Font is **JetBrains Mono** with a **Symbols Nerd Font**
@@ -37,7 +38,8 @@ fallback — a Nerd Font is assumed everywhere (`vim.g.have_nerd_font = true`).
 - tmux ≥ 3.0 (undercurl / underline-colour support) + [tpm](https://github.com/tmux-plugins/tpm)
 - [lazygit](https://github.com/jesseduffield/lazygit) for `<leader>gg`
 - Node.js / Go / Python toolchains for the language servers you actually use
-- btop, WezTerm
+- btop, [Ghostty](https://ghostty.org/) ≥ 1.1 (keybind sequences)
+- [presenterm](https://github.com/mfontanini/presenterm) ≥ 0.16 + `python3` (for `+exec` snippets)
 
 LSP servers and formatters are installed automatically by
 [mason.nvim](https://github.com/williamboman/mason.nvim) +
@@ -56,8 +58,9 @@ mkdir -p ~/.config
 
 ln -s ~/dotfiles/nvim    ~/.config/nvim
 ln -s ~/dotfiles/tmux    ~/.config/tmux
-ln -s ~/dotfiles/wezterm ~/.config/wezterm
+ln -s ~/dotfiles/ghostty ~/.config/ghostty
 ln -s ~/dotfiles/btop    ~/.config/btop
+ln -s ~/dotfiles/presenterm ~/.config/presenterm
 ```
 
 Symlink only what you want — each directory is independent.
@@ -77,7 +80,8 @@ pulls the language servers and formatters. Verify with `:checkhealth` and `:Lazy
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
-**WezTerm / btop** — no bootstrap step; they read the config on next launch.
+**Ghostty / btop / presenterm** — no bootstrap step; they read the config on next launch.
+Reload Ghostty's config in place with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>,</kbd>.
 
 ---
 
@@ -153,18 +157,50 @@ rest.
 - `M-h/j/k/l` — resize panes (passes through to Neovim when a Vim pane is focused)
 - Undercurl and OSC 8 hyperlink passthrough enabled
 
-## WezTerm
+## Ghostty
 
-- JetBrains Mono 14, line height 1.1, Nerd Font fallback, no freetype hinting
-- Blurred background image from `wezterm/assets/`, resize-only decorations, zero padding
-- Tab bar hidden when only one tab; 120 max FPS, EGL preferred
-- Command palette entry **Toggle terminal transparency** (`wezterm/commands/`) — swaps
-  between the background image and 0.8 opacity
+Migrated from WezTerm; the **Nocturne** palette came along unchanged
+(`ghostty/themes/nocturne`).
+
+- JetBrains Mono Nerd Font 13.5, cell height +15%, ligatures on (`calt`/`clig`/`liga`)
+- Nocturne dark palette, GTK headerbar (`window-decoration = auto`), padding 14/12 x 10/8
+- Block cursor, no blink, 50 MB scrollback, copy-on-select to the clipboard
+- Leader is <kbd>Ctrl</kbd>+<kbd>Space</kbd> (Ghostty key *sequences*), mirroring the old
+  WezTerm bindings
+
+| Key | Action |
+| --- | ------ |
+| <kbd>leader</kbd> `|` / `-` | Split right / down |
+| <kbd>leader</kbd> `h` `j` `k` `l` | Move between splits |
+| <kbd>leader</kbd> <kbd>Ctrl</kbd>+`hjkl` | Resize split |
+| <kbd>leader</kbd> `z` / `x` | Zoom / close split |
+| <kbd>leader</kbd> `c` / `n` / `p` | New tab / next / previous |
+| <kbd>leader</kbd> `b` | Toggle background opacity |
+| <kbd>Alt</kbd>+<kbd>1..9</kbd> | Jump to tab |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>d</kbd> / <kbd>e</kbd> | Split right / down |
+| <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>p</kbd> | Command palette |
+
+Set as the system terminal (GNOME, <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>T</kbd>):
+
+```bash
+sudo update-alternatives --set x-terminal-emulator /usr/bin/ghostty
+echo com.mitchellh.ghostty.desktop > ~/.config/GNOME-xdg-terminals.list
+gsettings set org.gnome.desktop.default-applications.terminal exec ghostty
+```
 
 ## btop
 
 - Tokyo Night theme, transparent background, truecolor
 - Vim keys enabled, 2s refresh, `cpu mem net proc` boxes
+
+## presenterm
+
+- Code snippet execution is enabled from the config, so `+exec` blocks run without
+  passing `-x` / `--enable-snippet-execution` on every invocation
+- A custom `python` executor writes the snippet to `snippet.py` and runs it with
+  `python3`
+- Check what presenterm actually loaded with `presenterm --current-theme`; an invalid
+  key makes it exit with `invalid configuration: ...`
 
 ---
 
@@ -177,7 +213,8 @@ rest.
   (e.g. `/usr/share/btop/themes/tokyo-night.theme`) or btop will fall back to default.
 - `tmux/tmux.conf` calls `~/.config/tmux/hooks/update-pane-status.sh`, which is not
   in this repo. Those bindings still work; the hook just fails silently.
-- tmux config also sets `xterm-ghostty` terminal features — harmless outside Ghostty.
+- Ghostty has no workspaces, copy-mode or scrollback search, so the WezTerm bindings for
+  those were dropped in the migration; tmux covers the same ground.
 
 ## License
 

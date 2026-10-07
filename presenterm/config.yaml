@@ -1,0 +1,8 @@
+snippet:
+  exec:
+    enable: true
+    custom:
+      python:
+        filename: snippet.py
+        commands:
+          - ["python3", "snippet.py"]
