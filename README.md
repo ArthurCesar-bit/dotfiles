@@ -80,6 +80,9 @@ pulls the language servers and formatters. Verify with `:checkhealth` and `:Lazy
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
+Non-interactive alternative to <kbd>prefix</kbd>+<kbd>I</kbd>, once a tmux server is
+running: `~/.tmux/plugins/tpm/bin/install_plugins`.
+
 **Ghostty / btop / presenterm** — no bootstrap step; they read the config on next launch.
 Reload Ghostty's config in place with <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>,</kbd>.
 
@@ -159,8 +162,9 @@ rest.
 - `hooks/update-pane-status.sh` shows the pane border status line (index + running
   command) only while a window is split, and hides it again once one pane is left.
   Run from the split and kill-pane bindings and from the `pane-exited` hook.
-- `tmux/plugins/` is gitignored — tpm clones plugin sources into the config dir,
-  which is this repo once symlinked.
+- Plugin sources live in `~/.tmux/plugins/`, pinned via `TMUX_PLUGIN_MANAGER_PATH`:
+  tpm otherwise defaults to `~/.config/tmux/plugins`, which is this repo once
+  symlinked. `tmux/plugins/` stays gitignored as a safety net.
 
 ## Ghostty
 
